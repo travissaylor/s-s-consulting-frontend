@@ -1,5 +1,6 @@
 import { GetStaticProps } from "next"
 import Head from "next/head"
+import FrontendLayout from "../../components/layouts/frontend"
 import PortfolioContainer from "../../components/PortfolioContainer"
 import PortfolioHero from "../../components/PortfolioHero"
 import api from "../../components/utils/api"
@@ -20,7 +21,7 @@ interface projectTypes {
 }
 export default function Portfolio({ projects }: portfolioItemPropTypes) {
     return (
-        <div>
+        <FrontendLayout>
             <Head>
                 <title>S &amp; S Portfolio</title>
                 <meta name="S &amp; S Portfolio" content="Check out our work" />
@@ -30,7 +31,7 @@ export default function Portfolio({ projects }: portfolioItemPropTypes) {
             <PortfolioHero />
 
             <PortfolioContainer projects={projects} />
-        </div>
+        </FrontendLayout>
     )
 }
 

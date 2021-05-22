@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from "next"
 import Head from "next/head"
+import FrontendLayout from "../../components/layouts/frontend"
 import SplitScreenHero from "../../components/ui/SplitScreenHero"
 import api from "../../components/utils/api"
 
@@ -20,7 +21,7 @@ interface projectTypes {
 
 const PortfolioItem = ({ project }: portfolioItemPropTypes) => {
     return (
-        <div>
+        <FrontendLayout>
             <Head>
                 <title>S &amp; S Portfolio</title>
                 <meta name="S &amp; S Portfolio" content="Check out our work" />
@@ -34,7 +35,7 @@ const PortfolioItem = ({ project }: portfolioItemPropTypes) => {
                 repoLink={project.repoLink}
                 infoLink={project.infoLink}
             />
-        </div>
+        </FrontendLayout>
     )
 }
 

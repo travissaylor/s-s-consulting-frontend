@@ -18,7 +18,7 @@ export const logIn = () => {
         sameSite: "lax",
     })
 
-    router.push("/")
+    router.push("/admin")
 }
 
 export const logOut = () => {
