@@ -17,9 +17,10 @@ interface PortfolioCardPropTypes {
     image: string
     title: string
     type: string
+    link: string
 }
 
-const PortfolioCard = ({ image, title, type }: PortfolioCardPropTypes) => {
+const PortfolioCard = ({ image, title, type, link }: PortfolioCardPropTypes) => {
     return (
         <Center py={12}>
             <Box
@@ -78,7 +79,7 @@ const PortfolioCard = ({ image, title, type }: PortfolioCardPropTypes) => {
                     </Heading>
                 </Stack>
                 <Stack pt={10} align={"center"}>
-                    <Link href="/">
+                    <Link href={link}>
                         <Button
                             colorScheme={"teal"}
                             bg={"teal.400"}
