@@ -1,10 +1,10 @@
 import { Fragment } from "react"
-import Footer from "../Footer"
-import Nav from "../Nav"
+import Footer from "../ui/Footer"
+import FrontendNav from "../ui/FrontendNav"
 
 const FrontendLayout = ({children}) => (
     <div>
-        <Nav />
+        <FrontendNav />
         {children}
         <Footer />
     </div>

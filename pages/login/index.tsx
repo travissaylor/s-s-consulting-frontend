@@ -14,10 +14,9 @@ import {
 } from "@chakra-ui/react"
 import React, { useState } from "react"
 import FrontendLayout from "../../components/layouts/frontend"
-import api from "../../components/utils/api"
-import { logIn } from "../../components/utils/auth"
+import { fullLogin } from "../../components/utils/auth"
 
-const LogInPage = () => {
+const LoginPage = () => {
     const [formInput, setFormInput] = useState({ email: "", password: "" })
 
     const updateFormInput = (e) => {
@@ -29,22 +28,10 @@ const LogInPage = () => {
         }))
     }
 
-    const signIn = (e) => {
+    const signIn = async (e) => {
         e.preventDefault()
 
-        api()
-            .get("/sanctum/csrf-cookie")
-            .then(() => {
-                api()
-                    .post("/login", formInput)
-                    .then((response) => {
-                        if (response.data.error) {
-                            console.log(response.data.error)
-                        } else {
-                            logIn()
-                        }
-                    })
-            })
+        await fullLogin(formInput)
     }
 
     return (
@@ -70,44 +57,50 @@ const LogInPage = () => {
                         boxShadow={"lg"}
                         p={8}>
                         <Stack spacing={4}>
-                            <FormControl id="email">
-                                <FormLabel>Email address</FormLabel>
-                                <Input
-                                    type="email"
-                                    name="email"
-                                    value={formInput.email}
-                                    onChange={updateFormInput}
-                                />
-                            </FormControl>
-                            <FormControl id="password">
-                                <FormLabel>Password</FormLabel>
-                                <Input
-                                    type="password"
-                                    name="password"
-                                    value={formInput.password}
-                                    onChange={updateFormInput}
-                                />
-                            </FormControl>
-                            <Stack spacing={10}>
-                                <Stack
-                                    direction={{ base: "column", sm: "row" }}
-                                    align={"start"}
-                                    justify={"space-between"}>
-                                    <Checkbox>Remember me</Checkbox>
-                                    <Link color={"blue.400"}>
-                                        Forgot password?
-                                    </Link>
+                            <form onSubmit={signIn}>
+                                <FormControl id="email">
+                                    <FormLabel>Email address</FormLabel>
+                                    <Input
+                                        type="email"
+                                        name="email"
+                                        value={formInput.email}
+                                        onChange={updateFormInput}
+                                    />
+                                </FormControl>
+                                <FormControl id="password">
+                                    <FormLabel>Password</FormLabel>
+                                    <Input
+                                        type="password"
+                                        name="password"
+                                        value={formInput.password}
+                                        onChange={updateFormInput}
+                                    />
+                                </FormControl>
+                                <Stack spacing={10}>
+                                    <Stack
+                                        direction={{
+                                            base: "column",
+                                            sm: "row",
+                                        }}
+                                        align={"start"}
+                                        justify={"space-between"}>
+                                        <Checkbox>Remember me</Checkbox>
+                                        <Link color={"blue.400"}>
+                                            Forgot password?
+                                        </Link>
+                                    </Stack>
+                                    <Button
+                                        type={"submit"}
+                                        onClick={signIn}
+                                        bg={"blue.400"}
+                                        color={"white"}
+                                        _hover={{
+                                            bg: "blue.500",
+                                        }}>
+                                        Sign in
+                                    </Button>
                                 </Stack>
-                                <Button
-                                    onClick={signIn}
-                                    bg={"blue.400"}
-                                    color={"white"}
-                                    _hover={{
-                                        bg: "blue.500",
-                                    }}>
-                                    Sign in
-                                </Button>
-                            </Stack>
+                            </form>
                         </Stack>
                     </Box>
                 </Stack>
@@ -116,4 +109,4 @@ const LogInPage = () => {
     )
 }
 
-export default LogInPage
+export default LoginPage

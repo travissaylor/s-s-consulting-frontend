@@ -1,6 +1,8 @@
 import router from "next/router"
 import Cookies from "js-cookie"
 import cookie from "cookie"
+import redirectTo from "./redirectTo"
+import api from "./api"
 
 export const isLoggedIn = (reqCookies = null) => {
     // if we don't have request cookies, get the cookie from client
@@ -21,6 +23,25 @@ export const logIn = () => {
     router.push("/admin")
 }
 
+export const fullLogin = async (inputs) => {
+    const promise = new Promise(async (resolve, reject) => {
+        try {
+            await api().get("/sanctum/csrf-cookie")
+            const response = await api().post("/login", inputs)
+            if (response.data.error) {
+                reject(response.data.error);
+            }
+            
+            logIn()
+            resolve(response);
+        } catch (error) {
+            reject(error);
+        }
+    })
+
+    return promise;
+}
+
 export const logOut = () => {
     if (typeof window !== "undefined") {
         // remove logged in user's cookie and redirect to login page
@@ -30,5 +51,32 @@ export const logOut = () => {
         })
 
         router.push("/login")
+    }
+}
+
+export const fullLogout = async () => {
+    const promise = new Promise(async (resolve, reject) => {
+        try {
+            const res = await api().post("/logout")
+            logOut()
+            resolve(res);
+        } catch (error) {
+            reject(error);
+        }
+    })
+
+    return promise;
+}
+
+export const requireAuthentication = (gssp) => {
+    return async (context) => {
+        const isUserLoggedIn = isLoggedIn(context?.req?.headers?.cookie || '')
+
+        if (! isUserLoggedIn) {
+            redirectTo('/login', context)
+            return;
+        }
+
+        return await gssp(context); // Continue on to call `getServerSideProps` logic
     }
 }

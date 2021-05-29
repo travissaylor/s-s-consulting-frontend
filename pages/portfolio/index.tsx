@@ -35,16 +35,11 @@ export default function Portfolio({ projects }: portfolioItemPropTypes) {
     )
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-    // params contains the post `id`.
-    // If the route is like /posts/1, then params.id is 1
-    // const res = await fetch(`https://.../posts/${params.id}`)
-    // const post = await res.json()
-    // const projects = STUB_PROJECTS
-    const res = await api().get('/api/projects');
-    const projects = await res.data;
+export const getStaticProps: GetStaticProps = async () => {
+    const res = await api().get("/api/projects")
+    const projects = await res.data
 
-    // Pass post data to the page via props
+    // Pass projects data to the page via props
     return { props: { projects } }
 }
 

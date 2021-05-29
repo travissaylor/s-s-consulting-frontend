@@ -1,50 +1,61 @@
 import { Button } from "@chakra-ui/button"
+import { Flex, Heading, Text } from "@chakra-ui/layout"
+import { useBreakpointValue } from "@chakra-ui/media-query"
 import { useEffect, useState } from "react"
 import AdminLayout from "../../components/layouts/admin"
 import PortfolioCard from "../../components/PortfolioCard"
 import PortfolioEditCard from "../../components/PortfolioEditCard"
 import api from "../../components/utils/api"
-import { logOut } from "../../components/utils/auth"
-import withAuth from "../../components/withAuth"
+import {
+    fullLogout,
+    logOut,
+    requireAuthentication,
+} from "../../components/utils/auth"
 
-const Admin = () => {
-    const [projects, setProjects] = useState([]);
-    useEffect(() => {
-        const getProjects = async () => {
-            const res = await api().get('/api/projects');
-            setProjects(await res.data);
-        }
-        getProjects();
-    }, [])
+const Admin = ({ initialprojects }) => {
+    const [projects, setProjects] = useState(initialprojects)
 
     const deleteProject = async (projectId: number) => {
         try {
-            const res = await api().delete(`/api/projects/${projectId}`);
-            setProjects((prevState) => prevState.filter((project) => project.id !== projectId));
-        } catch(error) {
-            console.error('Project could not be deleted');
-        }
-
-    }
-
-    const fullLogout = async () => {
-        try {
-            const res = await api().post('/logout');
-            logOut();
+            const res = await api().delete(`/api/projects/${projectId}`)
+            setProjects((prevState) =>
+                prevState.filter((project) => project.id !== projectId)
+            )
         } catch (error) {
-            console.error(error);
+            console.error("Project could not be deleted")
         }
     }
-    
+
     return (
         <AdminLayout>
-            <h1>Admin Dashboard</h1>
-            <Button onClick={fullLogout}>Logout</Button>
-            {projects && projects.map((project, index) => (
-                <PortfolioEditCard key={index} title={project.title} image={project.image} editLink={`/portfolio/${project.id}`} onDelete={() => deleteProject(project.id)} />
-            ))}
+            <Flex direction="column" justifyContent="center" align="center">
+                <Heading
+                    m={10}
+                    fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
+                    color={"teal.400"}>
+                    Projects
+                </Heading>
+                {projects &&
+                    projects.map((project, index) => (
+                        <PortfolioEditCard
+                            key={index}
+                            title={project.title}
+                            image={project.image}
+                            editLink={`/portfolio/${project.id}`}
+                            onDelete={() => deleteProject(project.id)}
+                        />
+                    ))}
+            </Flex>
         </AdminLayout>
     )
 }
 
-export default withAuth(Admin)
+export default Admin
+
+export const getServerSideProps = requireAuthentication(async () => {
+    const res = await api().get("/api/projects")
+    const projects = await res.data
+
+    // Pass projects data to the page via props
+    return { props: { initialprojects: projects } }
+})

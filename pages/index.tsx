@@ -1,10 +1,10 @@
 import Head from "next/head"
 import Image from "next/image"
 import Features from "../components/Features"
-import Footer from "../components/Footer"
+import Footer from "../components/ui/Footer"
 import Hero from "../components/Hero"
 import FrontendLayout from "../components/layouts/frontend"
-import Nav from "../components/Nav"
+import Nav from "../components/ui/FrontendNav"
 import Team from "../components/Team"
 import { isLoggedIn } from "../components/utils/auth"
 

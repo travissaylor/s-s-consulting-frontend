@@ -3,7 +3,6 @@ import {
     Flex,
     Text,
     IconButton,
-    Button,
     Stack,
     Collapse,
     Icon,
@@ -26,7 +25,7 @@ import {
 
 import NextLink from "next/link"
 
-const Nav = () => {
+const FrontendNav = () => {
     const { isOpen, onToggle } = useDisclosure()
     const { colorMode, toggleColorMode } = useColorMode()
 
@@ -82,26 +81,6 @@ const Nav = () => {
                     justify={"flex-end"}
                     direction={"row"}
                     spacing={6}>
-                    <Button
-                        as={"a"}
-                        fontSize={"sm"}
-                        fontWeight={400}
-                        variant={"link"}
-                        href={"#"}>
-                        Sign In
-                    </Button>
-                    <Button
-                        display={{ base: "none", md: "inline-flex" }}
-                        fontSize={"sm"}
-                        fontWeight={600}
-                        color={"white"}
-                        bg={"teal.400"}
-                        href={"#"}
-                        _hover={{
-                            bg: "teal.300",
-                        }}>
-                        Sign Up
-                    </Button>
                     <Switch
                         display="flex"
                         alignSelf="center"
@@ -119,7 +98,7 @@ const Nav = () => {
     )
 }
 
-export default Nav
+export default FrontendNav
 
 const DesktopNav = () => {
     return (

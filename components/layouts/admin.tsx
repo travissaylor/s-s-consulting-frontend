@@ -1,10 +1,10 @@
 import { Fragment } from "react"
-import Footer from "../Footer"
-import Nav from "../Nav"
+import AdminNav from "../ui/AdminNav";
+import Footer from "../ui/Footer"
 
 const AdminLayout = ({children}) => (
     <div>
-        <Nav />
+        <AdminNav />
         {children}
         <Footer />
     </div>
